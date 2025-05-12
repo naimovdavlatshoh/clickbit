@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
+import React from "react";
 
 export default function CheckBackup() {
     const [words, setWords] = useState({ one: "", two: "", three: "" });

@@ -11,6 +11,7 @@ import EmojiSelector from "react-native-emoji-selector";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import React from "react";
 
 const COLORS = [
     "#2D343E",

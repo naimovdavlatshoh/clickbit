@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import WalletImage from "@/assets/images/logohome.png"; // @ belgisi project root
 import { Image } from "react-native";
+import React from "react";
 
 export default function WalletScreen() {
     return (

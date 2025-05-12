@@ -13,6 +13,7 @@ import {
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import SendModal from "../sendModal";
+import { Link } from "expo-router";
 
 export default function Wallet() {
     const [modalVisible, setModalVisible] = useState(false); // State to control the modal visibility
@@ -59,9 +60,9 @@ export default function Wallet() {
 
             {/* Actions */}
             <View style={styles.actionsRow}>
-                <Pressable onPress={() => setModalVisible2(true)}>
+                <Link href={"/sendModal"}>
                     <ActionButton icon="send" label="Send" />
-                </Pressable>
+                </Link>
 
                 <ActionButton icon="download" label="Receive" />
                 <ActionButton icon="qr-code" label="Scan" />
@@ -160,8 +161,7 @@ export default function Wallet() {
                 </TouchableOpacity>
             </Modal>
 
-            <SendModal modalVisible2={modalVisible2} handleCloseModal2={handleCloseModal2}/>
-
+         
         </View>
     );
 }

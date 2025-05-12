@@ -9,6 +9,7 @@ import {
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
+import React from "react";
 
 export default function RePassword() {
     const [pin, setPin] = useState<string>("");

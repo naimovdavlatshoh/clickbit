@@ -7,101 +7,180 @@ import {
     TouchableOpacity,
     Pressable,
     Dimensions,
+    Image,
+    Modal, // <-- bu yerda import qilingan
 } from "react-native";
-import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import { Link } from "expo-router";
 
-export default function SendModal({ modalVisible2, handleCloseModal2 }: any) {
+export default function SendModal() {
     const [address, setAddress] = useState("");
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
+    const [tokenModalVisible, setTokenModalVisible] = useState(false);
+
+    const [addressFocus, setAddressFocus] = useState(false);
+    const [amountFocus, setAmountFocus] = useState(false);
+    const [commentFocus, setCommentFocus] = useState(false);
 
     return (
-        <Modal
-            isVisible={modalVisible2}
-            onBackdropPress={handleCloseModal2}
-            onSwipeComplete={handleCloseModal2}
-            swipeDirection="down"
-            style={styles.modalStyle}
-        >
-            <View style={styles.modalContainer}>
-                <View style={styles.topBar}>
-                    <View style={styles.leftSpace} />
+        <View style={styles.modalContainer}>
+            <View style={styles.topBar}>
+                <View style={styles.leftSpace} />
+                <Pressable style={styles.walletHeader}>
+                    <Text style={styles.walletText}>Send</Text>
+                </Pressable>
+                <Link href="../" style={styles.settingsIcon}>
+                    <Ionicons name="close-outline" size={24} color="white" />
+                </Link>
+            </View>
 
-                    <Pressable style={styles.walletHeader}>
-                        <Text style={styles.walletText}>Send</Text>
-                    </Pressable>
-
-                    <TouchableOpacity
-                        onPress={handleCloseModal2}
-                        style={styles.settingsIcon}
-                    >
-                        <Ionicons
-                            name="close-outline"
-                            size={24}
-                            color="white"
-                        />
-                    </TouchableOpacity>
-                </View>
-
+            {/* Address input */}
+            <View
+                style={[
+                    styles.inputWrapper,
+                    addressFocus && styles.inputFocused,
+                ]}
+            >
                 <TextInput
-                    style={styles.input}
+                    style={styles.inputWithIcons}
                     placeholder="Address or name"
                     placeholderTextColor="#888"
                     value={address}
                     onChangeText={setAddress}
+                    onFocus={() => setAddressFocus(true)}
+                    onBlur={() => setAddressFocus(false)}
                 />
-                <View style={styles.amountRow}>
-                    <TextInput
-                        style={[styles.input, { flex: 1, marginRight: 10 }]}
-                        placeholder="Amount"
-                        placeholderTextColor="#888"
-                        keyboardType="numeric"
-                        value={amount}
-                        onChangeText={setAmount}
+                <Pressable style={styles.pasteButton}>
+                    <Text style={styles.pasteText}>Paste</Text>
+                </Pressable>
+                <Ionicons
+                    name="scan-outline"
+                    size={20}
+                    color="#888"
+                    style={styles.rightIcon}
+                />
+            </View>
+
+            {/* Amount + TON */}
+            <View
+                style={[
+                    styles.inputWrapper,
+                    amountFocus && styles.inputFocused,
+                    { paddingHorizontal: 0 },
+                ]}
+            >
+                <TextInput
+                    style={styles.inputAmountWithToken}
+                    placeholder="Amount"
+                    placeholderTextColor="#888"
+                    keyboardType="numeric"
+                    value={amount}
+                    onChangeText={setAmount}
+                    onFocus={() => setAmountFocus(true)}
+                    onBlur={() => setAmountFocus(false)}
+                />
+                <TouchableOpacity
+                    style={styles.tokenBox}
+                    onPress={() => setTokenModalVisible(true)}
+                >
+                    <Image
+                        source={require("../assets/images/ton.png")}
+                        style={{ width: 20, height: 20, marginRight: 10 }}
                     />
-                    <View style={styles.tokenBox}>
-                        <Text style={styles.tokenText}>TON</Text>
+                    <Text style={styles.tokenText}>TON</Text>
+                    <Ionicons
+                        name="chevron-down"
+                        size={16}
+                        color="white"
+                        style={{ marginLeft: 4 }}
+                    />
+                </TouchableOpacity>
+            </View>
+
+            {/* Modal (Pastdan chiqadi) */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={tokenModalVisible}
+                onRequestClose={() => setTokenModalVisible(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.tokenModal}>
+                        <View style={styles.modalHeader}>
+                            <Text style={styles.modalTitle}>Tokens</Text>
+                            <TouchableOpacity
+                                onPress={() => setTokenModalVisible(false)}
+                            >
+                                <Ionicons
+                                    name="close-outline"
+                                    size={20}
+                                    color="white"
+                                />
+                            </TouchableOpacity>
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => setTokenModalVisible(false)}
+                            style={styles.modalToken}
+                        >
+                            <Image
+                                source={require("../assets/images/ton.png")}
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 10,
+                                }}
+                            />
+                            <Text style={{ color: "white" }}>TON</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
+            </Modal>
 
-                <View style={styles.remainingRow}>
-                    <Text style={styles.remainingText}>Remaining 0 TON</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.maxText}>MAX</Text>
-                    </TouchableOpacity>
-                </View>
+            {/* Remaining and MAX */}
+            <View style={styles.remainingRow}>
+                <Text style={styles.remainingText}>Remaining 0 TON</Text>
+                <TouchableOpacity>
+                    <Text style={styles.maxText}>MAX</Text>
+                </TouchableOpacity>
+            </View>
 
+            {/* Comment Input */}
+            <View
+                style={[
+                    styles.inputWrapper,
+                    commentFocus && styles.inputFocused,
+                ]}
+            >
                 <TextInput
-                    style={styles.input}
-                    placeholder="Comment"
+                    style={styles.inputWithIcons}
+                    placeholder="Comment (optional)"
                     placeholderTextColor="#888"
                     value={comment}
                     onChangeText={setComment}
+                    onFocus={() => setCommentFocus(true)}
+                    onBlur={() => setCommentFocus(false)}
                 />
-
-                <TouchableOpacity style={styles.continueButton}>
-                    <Text style={styles.continueText}>Continue</Text>
-                </TouchableOpacity>
+                <Pressable style={styles.pasteButton}>
+                    <Text style={styles.pasteText}>Paste</Text>
+                </Pressable>
             </View>
-        </Modal>
+
+            {/* Continue Button */}
+            <TouchableOpacity style={styles.continueButton}>
+                <Text style={styles.continueText}>Continue</Text>
+            </TouchableOpacity>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    modalBackground: {
-        flex: 1,
-        justifyContent: "flex-end",
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
-    },
-
     modalContainer: {
         backgroundColor: Colors.dark.background,
         padding: 20,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        height: Dimensions.get("window").height * 0.93, // deyarli to‘liq ekran
+        height: Dimensions.get("window").height * 0.93,
     },
     topBar: {
         flexDirection: "row",
@@ -110,7 +189,7 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     leftSpace: {
-        width: 24, // settings icon size bilan teng qilib bo'sh joy qoldirildi
+        width: 24,
     },
     walletHeader: {
         flexDirection: "row",
@@ -124,39 +203,74 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 22,
         marginHorizontal: 5,
-        fontWeight: 600,
+        fontWeight: "600",
     },
     settingsIcon: {
         padding: 8,
     },
-    input: {
-        backgroundColor: "#1D2633",
-        padding: 14,
-        borderRadius: 10,
-        color: "white",
-        marginBottom: 15,
-    },
-    amountRow: {
+
+    inputWrapper: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 10,
-    },
-    tokenBox: {
-        backgroundColor: "#1c1e2c",
-        paddingVertical: 12,
-        paddingHorizontal: 16,
+        backgroundColor: "#1D2633",
         borderRadius: 10,
+        marginBottom: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+    },
+    inputWithIcons: {
+        flex: 1,
+        paddingVertical: 14,
+        paddingHorizontal: 10,
+        color: "white",
+    },
+    inputAmountWithToken: {
+        flex: 1,
+        paddingVertical: 14,
+        paddingHorizontal: 12,
+        color: "white",
+    },
+    inputFocused: {
+        borderWidth: 1,
+        borderColor: "#45AEF5",
+    },
+    pasteButton: {
+        backgroundColor: "#2E3847",
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 20,
         justifyContent: "center",
         alignItems: "center",
+        color: "white",
+    },
+    pasteText: {
+        color: "white",
+        fontWeight: "500",
+        fontSize: 12,
+    },
+    rightIcon: {
+        marginLeft: 5,
+        color: "#45AEF5",
+    },
+
+    tokenBox: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#2E3847",
+        paddingVertical: 12,
+        paddingHorizontal: 8,
+        borderRadius: 20,
+        marginRight: 10,
     },
     tokenText: {
         color: "white",
         fontWeight: "600",
     },
+
     remainingRow: {
         flexDirection: "row",
         justifyContent: "flex-end",
-        gap: 20,
+        gap: 10,
         marginBottom: 15,
     },
     remainingText: {
@@ -166,6 +280,7 @@ const styles = StyleSheet.create({
         color: "#45AEF5",
         fontWeight: "500",
     },
+
     continueButton: {
         backgroundColor: "#378AC2",
         paddingVertical: 14,
@@ -175,11 +290,41 @@ const styles = StyleSheet.create({
     },
     continueText: {
         color: "white",
-        fontWeight: 600,
+        fontWeight: "600",
         fontSize: 14,
     },
-    modalStyle: {
+
+    // Modal uchun
+    modalOverlay: {
+        flex: 1,
         justifyContent: "flex-end",
-        margin: 0, // modalni to‘liq pastdan chiqarish uchun
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+    },
+    tokenModal: {
+        backgroundColor: "#1D2633",
+        padding: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+    },
+    modalHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 10,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: "white",
+        marginBottom: 15,
+    },
+    modalToken: {
+        backgroundColor: "#2E3847",
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        borderRadius: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 20,
     },
 });
