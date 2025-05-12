@@ -65,7 +65,9 @@ export default function Wallet() {
                 </Link>
 
                 <ActionButton icon="download" label="Receive" />
-                <ActionButton icon="qr-code" label="Scan" />
+                <Link href={"/scan"}>
+                    <ActionButton icon="qr-code" label="Scan" />
+                </Link>
             </View>
             <View style={styles.actionsRowCenter}>
                 <ActionButton icon="swap-horizontal" label="Swap" />
@@ -160,8 +162,6 @@ export default function Wallet() {
                     </TouchableOpacity>
                 </TouchableOpacity>
             </Modal>
-
-         
         </View>
     );
 }

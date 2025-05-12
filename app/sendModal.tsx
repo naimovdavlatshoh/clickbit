@@ -55,12 +55,9 @@ export default function SendModal() {
                 <Pressable style={styles.pasteButton}>
                     <Text style={styles.pasteText}>Paste</Text>
                 </Pressable>
-                <Ionicons
-                    name="scan-outline"
-                    size={20}
-                    color="#888"
-                    style={styles.rightIcon}
-                />
+                <Link href={"/scanSend"} style={styles.rightIcon}>
+                    <Ionicons name="scan-outline" size={20} color="#888" />
+                </Link>
             </View>
 
             {/* Amount + TON */}
@@ -249,7 +246,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     rightIcon: {
-        marginLeft: 5,
+        marginLeft: 10,
         color: "#45AEF5",
     },
 

@@ -16,7 +16,7 @@ import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ScanModal() {
+export default function ScanSendModal() {
     const [permission, requestPermission] = useCameraPermissions();
     const [scanned, setScanned] = useState(false);
     const cameraRef = useRef(null);

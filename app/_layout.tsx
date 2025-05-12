@@ -11,6 +11,18 @@ export default function RootLayout() {
                     presentation: "modal",
                 }}
             />
+            <Stack.Screen
+                name="scan"
+                options={{
+                    presentation: "modal",
+                }}
+            />
+            <Stack.Screen
+                name="scanSend"
+                options={{
+                    presentation: "modal",
+                }}
+            />
         </Stack>
     );
 }
